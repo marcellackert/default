@@ -1,0 +1,20 @@
+.header {
+    height: 200px;
+    top: 50px;
+    position: relative;
+    font-size: 50;
+    text-align: center;
+    align-content: center;
+}
+
+.menu {
+    top: 210px;
+    left: 10px;
+    position: absolute;
+}
+
+.content {
+    top: 210px;
+    left: 300px;
+    position: absolute;
+}
