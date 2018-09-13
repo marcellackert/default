@@ -1,12 +1,14 @@
 <?php 
 require("functions/db_connect.php");
-include("functions/db_checks.php");
+//require("functions/db_checks.php");
+require("classes/class.db.php");
+
+$wurst = new DB();
 
 if (isset($_POST["eintragen"]))
 {
     $sprache = $mysqli->escape_string($_POST["sprache"]);
     $kurzform = strtoupper($mysqli->escape_string($_POST["kurzform"]));
-    echo existcheck($sprache);
 
     if (empty($sprache) || empty($kurzform))
     {
@@ -14,17 +16,17 @@ if (isset($_POST["eintragen"]))
     }
     else    
     {
-        $res = $mysqli->query("select sprache from sprachen where sprache = '$sprache' or kurzform = '$kurzform'");
-        if ($res->num_rows > 0)
-        {
-            $meldung = "Sprache oder Kurzform bereits vorhanden.";
-        }
+        $checksql = "select sprache from sprachen where sprache = '$sprache' or kurzform = '$kurzform'";
+        $writesql = "insert into sprachen (sprache,kurzform) values ('$sprache','$kurzform')";
+        $meldung = $wurst->existcheck($checksql,$writesql,"Gespeichert","Sprache schon vorhanden");
+        /*
         else
         {
             $mysqli->query("insert into sprachen (sprache,kurzform) values ('$sprache','$kurzform')");
             echo $mysqli->error;
             $meldung = "Die Sprache $sprache wurde angelegt.";
         }
+        */
     }
 }
 

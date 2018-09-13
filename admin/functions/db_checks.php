@@ -1,19 +1,26 @@
 <?php
 
 //Funktion um zu prüfen ob ein Datenbank Eintrag existiert
-function existcheck($query)
+function existcheck($db, $checksql, $writesql, $oktext, $wrongtext)
 {
-    if ($query % 2 == 0)
-        dbwrite($query);
+    
+    $res = $db->query($checksql);
+    
+    if ($res->num_rows > 0)
+    {
+        return $wrongtext;
+    }
     else
-        return ("Ungerade");
+    {
+        return dbwrite($db, $writesql, $oktext);
+    }   
 }   
 
 //Funktion zum speichern von Daten
-function dbwrite($query)
+function dbwrite($db, $writesql, $oktext)
 {
-    echo "gespeichert";
-    return "ist drin";
+    $db->query($writesql);
+    return $oktext;
 }
 
 ?>
