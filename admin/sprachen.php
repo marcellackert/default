@@ -18,7 +18,8 @@ if (isset($_POST["eintragen"]))
     {
         $checksql = "select sprache from sprachen where sprache = '$sprache' or kurzform = '$kurzform'";
         $writesql = "insert into sprachen (sprache,kurzform) values ('$sprache','$kurzform')";
-        $meldung = $wurst->existcheck($checksql,$writesql,"Gespeichert","Sprache schon vorhanden");
+        //$meldung = $wurst->existcheck($checksql,$writesql,"Gespeichert","Sprache schon vorhanden");
+        echo $wurst->calldb("check",$checksql,$writesql,"OK","FALSCH");
         /*
         else
         {

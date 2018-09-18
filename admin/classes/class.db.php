@@ -2,16 +2,21 @@
 
     class DB { 
         
-        protected $dbhost = "localhost";
-        protected $dbuser = "root";
-        protected $dbpw = "";
-        protected $dbdatabase = "friendsbattle";
-        public $db = null;
+        //Datenbank Konfiguration
+        private $dbhost = "localhost";
+        private $dbuser = "root";
+        private $dbpw = "";
+        private $dbdatabase = "friendsbattle";
+
+        
+        private $db = null;
+        private $sqlmeldung;
+        private $sqlok = null;
+        private $sqlfalse = null;
+        private $sqlcheck = null;
+        private $sqlwrite = null;
         
         public function __construct() { 
-            $this->connect(); 
-        } 
-        public function connect() { 
             $db = new mysqli($this->dbhost,$this->dbuser,$this->dbpw,$this->dbdatabase);
             if ($db->connect_errno)
             {
@@ -21,27 +26,37 @@
             $this->db = $db;
         } 
 
-        public function existcheck($checksql, $writesql, $oktext, $wrongtext)
+        public function calldb($action,$checksql,$writesql,$okmessage,$falsemessage)
+        {
+            $this->sqlok = $okmessage;
+            $this->sqlfalse = $falsemessage;
+            $this->sqlcheck = $checksql;
+            $this->sqlwrite = $writesql;
+            
+            if ($action == 'check') 
+            { 
+                $this->existcheck(); 
+            }
+            return $this->sqlmeldung;
+        }
+
+        private function existcheck()
         {        
-            $res = $this->db->query($checksql);
-            echo "<pre>";
-            var_dump($res->num_rows);
-            echo "</pre>";
+            $res = $this->db->query($this->sqlcheck);
             if ($res->num_rows > 0)
             {
-                return $wrongtext;
+                $this->sqlmeldung = $this->sqlfalse;
             }
             else
             {
-                return $oktext;
-                //return dbwrite($db, $writesql, $oktext);
-            }   
+                $this->sqlmeldung = $this->sqlok;
+                $this->dbwrite();
+            }  
         }  
 
-        function dbwrite($db, $writesql, $oktext)
+        function dbwrite()
         {
-            $db->query($writesql);
-            return $oktext;
+            $this->db->query($this->sqlwrite);
         }
     } 
 ?>
