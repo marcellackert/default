@@ -8,7 +8,7 @@ $meldung = "";
     <head>
         <title>Friendsbattle Adminbereich</title>
         <meta charset="utf-8"/>
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="adminstyle.css">
     </head>
     <body>
         <!-- Header -->
@@ -18,6 +18,6 @@ $meldung = "";
         <!-- Menü -->
         <div class="menu"><?php include("menu.php"); ?></div>
         <!-- Content -->
-        <div class="content"><?php include("$page.php"); ?></div>
+        <?php include("$page.php"); ?>
     </body>
 </html>

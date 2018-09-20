@@ -18,3 +18,8 @@
     left: 300px;
     position: absolute;
 }
+
+.right {
+    left: 800px;
+    position: absolute;
+}
