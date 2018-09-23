@@ -45,6 +45,7 @@ foreach ($arr as $key => $value)
 {
     echo $value->sprachid; echo "<br>";
     echo "test";
+    echo "Hurensohn";
 }
 
 
