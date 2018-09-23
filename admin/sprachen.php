@@ -1,5 +1,4 @@
 <?php 
-require("../config.inc.php");
 require("classes/class.db.php");
 
 $db = new DB($dbhost,$dbuser,$dbpw,$dbdatabase);
@@ -17,11 +16,16 @@ if (isset($_POST["eintragen"]))
     }
     else    
     {
-        $checksql = "select sprache from sprachen where sprache = '$sprache' or kurzform = '$kurzform'";
+        $readsql = "select sprache from sprachen where sprache = '$sprache' or kurzform = '$kurzform'";
         $writesql = "insert into sprachen (sprache,kurzform) values ('$sprache','$kurzform')";
-        $meldung = $db->calldb("checkwrite",$checksql,$writesql,"Die Sprache wurde angelegt.","Die Sprache existiert bereits");
+        $meldung = $db->calldb("checkwrite",$readsql,$writesql,"Die Sprache wurde angelegt.","Die Sprache existiert bereits");
     }
 }
+
+//$readsql = "select * from sprachen where kurzform = 'DE'";
+$readsql = "select * from sprachen";
+$arr = $db->calldb("readall",$readsql,null,"Die Sprache wurde angelegt.","Die Sprache existiert bereits");
+
 
 ?>
 <div class="content">
@@ -33,4 +37,17 @@ if (isset($_POST["eintragen"]))
 <input type="submit" name="eintragen" value="Anlegen"/>
 </form>
 </div>
-<div class="right">bla</div>
+<div class="right">
+<?php
+
+
+foreach ($arr as $key => $value)
+{
+    echo $value->sprachid; echo "<br>";
+}
+
+
+?>
+
+</div>
+

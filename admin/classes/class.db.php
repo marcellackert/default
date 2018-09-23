@@ -2,15 +2,15 @@
     class DB extends mysqli { 
 
         //Objekt Attribute
-        private $sqlmeldung;
+        private $sqlerg;
         private $sqlok = null;
         private $sqlfalse = null;
-        private $sqlcheck = null;
+        private $sqlread = null;
         private $sqlwrite = null;
         
         //Konstruktor - Herstellen der Verbindung
-        public function __construct($a,$b,$c,$d) { 
-            parent::__construct($a,$b,$c,$d);
+        public function __construct($host,$user,$pw,$database) { 
+            parent::__construct($host,$user,$pw,$database);
             if ($this->connect_errno)
             {
                 echo "Die Verbindung zur Datenbank konnte nicht hergestellt werden.<br/>Wir arbeiten bereits daran das Problem zu beheben.";
@@ -36,7 +36,7 @@
         {
             $this->sqlok = $okmessage;
             $this->sqlfalse = $falsemessage;
-            $this->sqlcheck = $checksql;
+            $this->sqlread = $checksql;
             $this->sqlwrite = $writesql;
             
             if ($action == "checkonly") 
@@ -51,7 +51,15 @@
             {
                 $this->write();
             }
-            return $this->sqlmeldung;
+            if ($action == "readone")
+            {
+                $this->readone();
+            }
+            if ($action == "readall")
+            {
+                $this->readall();
+            }
+            return $this->sqlerg;
         }
 
         /* 
@@ -61,14 +69,14 @@
         */
         private function existcheck($action)
         {        
-            $res = $this->query($this->sqlcheck);
+            $res = $this->query($this->sqlread);
             if ($res->num_rows > 0)
             {
-                $this->sqlmeldung = $this->sqlfalse;
+                $this->sqlerg = $this->sqlfalse;
             }
             else
             {
-                $this->sqlmeldung = $this->sqlok;
+                $this->sqlerg = $this->sqlok;
                 if ($action == "write") 
                 {
                      $this->dbwrite(); 
@@ -77,10 +85,27 @@
         } 
 
         //Schreibt Attribut sqlwrite in die Datenbank
-        function dbwrite()
+        private function dbwrite()
         {
             $this->query($this->sqlwrite);
         }
+
+        //Speichert eine Zeile im Objekt
+        private function readone()
+        {
+             $result = $this->query($this->sqlread);
+             $this->sqlerg = $result->fetch_object();
+        }
+
+        //Speichert Array der Abfrage im Objekt
+        private function readall()
+        {
+            $result = $this->query($this->sqlread);
+            while ($data = $result->fetch_object())
+            {
+                $this->sqlerg[] = $data; 
+            }
+        }
+
     } 
 ?>
-

@@ -1,4 +1,5 @@
 <?php 
+require("../config.inc.php");
 if (isset($_REQUEST["page"])) $page = $_REQUEST["page"];
 else $page = "welcome";
 //Standard Variable Meldung anlegen, diese wird in den Includes zur Ausgabe verwendet
