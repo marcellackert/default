@@ -44,6 +44,7 @@ $arr = $db->calldb("readall",$readsql,null,"Die Sprache wurde angelegt.","Die Sp
 foreach ($arr as $key => $value)
 {
     echo $value->sprachid; echo "<br>";
+    echo "test";
 }
 
 
